@@ -275,6 +275,7 @@ var plotDistribution = function()
 			title: 'scores distribution',
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			color:"indigo",
 =======
 			color:"yellow",
@@ -282,6 +283,9 @@ var plotDistribution = function()
 =======
 			color:"#a6c1b9",
 >>>>>>> c74efa2... Update sc.js
+=======
+			color:"#487165",
+>>>>>>> 7c12ca0... Update sc.js
 			 customBars: true,
           }
       );
@@ -350,6 +354,7 @@ var plotDeviation = function()
 			title: 'scores deviation',
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			  color:"purple",
 =======
 			  color:"yellow",
@@ -357,6 +362,9 @@ var plotDeviation = function()
 =======
 			  color:"#a6c1b9",
 >>>>>>> c74efa2... Update sc.js
+=======
+			  color:"##487165",
+>>>>>>> 7c12ca0... Update sc.js
 			 customBars: true,
           }
       );
