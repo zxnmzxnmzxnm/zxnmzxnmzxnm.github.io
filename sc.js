@@ -276,6 +276,7 @@ var plotDistribution = function()
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			color:"indigo",
 =======
 			color:"yellow",
@@ -286,6 +287,9 @@ var plotDistribution = function()
 =======
 			color:"#487165",
 >>>>>>> 7c12ca0... Update sc.js
+=======
+			color:"indigo",
+>>>>>>> 19afe8c... Update sc.js
 			 customBars: true,
           }
       );
@@ -355,6 +359,7 @@ var plotDeviation = function()
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			  color:"purple",
 =======
 			  color:"yellow",
@@ -365,6 +370,9 @@ var plotDeviation = function()
 =======
 			  color:"##487165",
 >>>>>>> 7c12ca0... Update sc.js
+=======
+			  color:"purple",
+>>>>>>> 19afe8c... Update sc.js
 			 customBars: true,
           }
       );
