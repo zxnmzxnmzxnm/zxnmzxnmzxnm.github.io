@@ -8,7 +8,6 @@ var openFile = function(event) {
 	var onload = function(event) {
 		text = reader.result;
 		buildPlots(text);
-
 	};
     
 	reader.onload = onload;
@@ -55,9 +54,10 @@ var buildPlots = function(xml)
 	scoresToArray(scores);
 	
 	plotAverageByDay(scores);
+	plotPlayCount(scores);
+	plotDistribution(scores);
 	plotDeviation(scores);
 	plotSkills(scores);
-	plotPlayCount(scores);
 }
 
 
@@ -81,26 +81,42 @@ var plotPlayCount = function(scores)
   		return a[0]- b[0];
 	});
 
+	var c = Array();
+	for (var d = new Date(b[0][0].getTime()), i = 0; d < b[b.length-1][0]; d.setDate(d.getDate() + 1)) {
+		if(d.getTime() === b[i][0].getTime())
+		{
+			c.push(b[i]);
+			i++;
+		}
+		else 
+		{
+			c.push(Array.prototype.concat(new Date(d.getTime()),new Array([0,0,0])));
+		}
+	}
+
 		new Dygraph(
           	document.getElementById("graphPlCo"),
-		  b
+		 c
 			,
           {
 			labels: [ "Date", "Play count"],
 			title:"play count",
 			
+                drawAxesAtZero: false,
               fillAlpha: 0.4,
 			  color:"secondary",
       		 customBars: true,
             showRangeSelector: true,
           }
       );
+	  
 }
 
 var plotSkills = function(scores)
 {
+
 	var a = Array();
-	
+
 	for( var i = 0; i < scoresArray.length; i++)
 	{
 		for( var j = 0; j < 7; j++)
@@ -202,7 +218,7 @@ var plotAverageByDay = function(scores)
 	  
 }
 
-var plotDeviation = function(scores)
+var plotDistribution = function(scores)
 {
 	
 	var a = Array();
@@ -217,7 +233,6 @@ var plotDeviation = function(scores)
 	var b = Array();
 	for (var key in a) 
 	{
-		//var meanByDay = get_mean(a[key])
 		for(var i = 0 ; i < a[key].length; i++)
 		{
 			b.push(a[key][i]);
@@ -250,17 +265,85 @@ var plotDeviation = function(scores)
 	});
 
 	new Dygraph(
+          document.getElementById("graphDist"),
+		  d
+			,
+          {
+			labels: [ "distribution", "count"],
+			title: 'scores distribution',
+			color:"teal",
+			 customBars: true,
+          }
+      );
+
+	  //$("#graphDeviText").text("dependence chart of scores count from the score value");
+}
+
+
+var plotDeviation = function(scores)
+{
+	
+	var a = Array();
+	for( var i = 0; i < scoresArray.length; i++)
+	{
+		if(a[scoresArray[i][0]] != undefined)
+			a[scoresArray[i][0]] = Array.prototype.concat(a[scoresArray[i][0]] , Number.parseFloat(scoresArray[i][1]));
+		else
+			a[scoresArray[i][0]] = Array.prototype.concat( Number.parseFloat(scoresArray[i][1]));
+	}
+	
+	var b = Array();
+	for (var key in a) 
+	{
+		var mean = get_mean(a[key]);
+		for(var i = 0 ; i < a[key].length; i++)
+		{
+			b.push(a[key][i]-mean);
+		}
+		
+		//b.push(Array.prototype.concat(new Date(key),new Array([Math.min.apply(Math, a[key])/*get_mean(a[key])-get_variance(a[key])*/,get_mean(a[key]),/*get_mean(a[key])+get_variance(a[key])*/Math.max.apply(Math, a[key])])));
+	}
+
+	var div = 50;
+
+	var c = Array();
+	var min = Math.round(Math.min.apply(Math, b)*div);
+	var max =   Math.round(Math.max.apply(Math, b)*div);
+	
+
+	for (var i = min; i < max ; i+=1)
+	{
+		c[i] = 0;
+	}
+	for (var j = 0; j < b.length; j++)
+	{
+		c[Math.round(b[j]*div)] += 1;
+	}
+
+
+	var d = Array();
+	for (var key in c)
+	{
+		d.push(new Array(Number.parseFloat(key)/div, [0, c[key], c[key]]));
+	}
+
+	d.sort(function(a,b){
+  		return a[0]- b[0];
+	});
+
+	new Dygraph(
           document.getElementById("graphDevi"),
 		  d
 			,
           {
 			labels: [ "deviation", "count"],
-			title: 'scores distribution',
+			title: 'scores deviation',
+			  color:"purple",
 			 customBars: true,
           }
       );
 
-	  $("#graphDeviText").text("dependence chart of scores count from the score value");
+	  //$("#graphIndepDeviText").text("independent of skill changes gain over time");
 }
 
 function add(a, b) {
