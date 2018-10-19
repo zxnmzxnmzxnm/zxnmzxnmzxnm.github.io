@@ -40,6 +40,7 @@ var scoresToArray = function(scores)
 			scoresArray[idx-dec].push($(v).find("JackSpeed").text());
 			scoresArray[idx-dec].push($(v).find("Chordjack").text());
 			scoresArray[idx-dec].push($(v).find("Technical").text());
+			scoresArray[idx-dec].push($(v).find("SSRNormPercent").text());
 		}
 		else
 		{
@@ -53,15 +54,16 @@ var buildPlots = function(xml)
 	var scores = parseScores(xml)
 	scoresToArray(scores);
 	
-	plotAverageByDay(scores);
-	plotPlayCount(scores);
-	plotDistribution(scores);
-	plotDeviation(scores);
-	plotSkills(scores);
+	plotAverageByDay();
+	plotPlayCount();
+	plotDistribution();
+	plotDeviation();
+	plotSkills();
+	plotWife();
 }
 
 
-var plotPlayCount = function(scores)
+var plotPlayCount = function()
 {
 	var a = Array();
 	for( var i = 0; i < scoresArray.length; i++)
@@ -112,7 +114,7 @@ var plotPlayCount = function(scores)
 	  
 }
 
-var plotSkills = function(scores)
+var plotSkills = function()
 {
 
 	var a = Array();
@@ -183,7 +185,7 @@ var plotSkills = function(scores)
       );
 }
 
-var plotAverageByDay = function(scores)
+var plotAverageByDay = function()
 {
 	
 	var a = Array();
@@ -218,7 +220,7 @@ var plotAverageByDay = function(scores)
 	  
 }
 
-var plotDistribution = function(scores)
+var plotDistribution = function()
 {
 	
 	var a = Array();
@@ -271,7 +273,7 @@ var plotDistribution = function(scores)
           {
 			labels: [ "distribution", "count"],
 			title: 'scores distribution',
-			color:"teal",
+			color:"indigo",
 			 customBars: true,
           }
       );
@@ -280,7 +282,7 @@ var plotDistribution = function(scores)
 }
 
 
-var plotDeviation = function(scores)
+var plotDeviation = function()
 {
 	
 	var a = Array();
@@ -344,6 +346,67 @@ var plotDeviation = function(scores)
       );
 
 	  //$("#graphIndepDeviText").text("independent of skill changes gain over time");
+}
+
+var plotWife = function()
+{
+	var a = Array();
+	for( var i = 0; i < scoresArray.length; i++)
+	{
+		if(a[scoresArray[i][0]] != undefined)
+			a[scoresArray[i][0]] = Array.prototype.concat(a[scoresArray[i][0]] , Number.parseFloat(scoresArray[i][9]));
+		else
+			a[scoresArray[i][0]] = Array.prototype.concat( Number.parseFloat(scoresArray[i][9]));
+	}
+	
+	var b = Array();
+	for (var key in a) 
+	{
+		
+		for(var i = 0 ; i < a[key].length; i++)
+		{
+			b.push(a[key][i]);
+		}
+		//b.push(Array.prototype.concat(new Date(key),new Array([Math.min.apply(Math, a[key])/*get_mean(a[key])-get_variance(a[key])*/,get_mean(a[key]),/*get_mean(a[key])+get_variance(a[key])*/Math.max.apply(Math, a[key])])));
+	}
+
+	var div = 1000;
+
+	var c = Array();
+	var min = Math.round(Math.min.apply(Math, b)*div);
+	var max =   Math.round(Math.max.apply(Math, b)*div);
+	for (var i = min; i < max ; i+=1)
+	{
+		c[i] = 0;
+	}
+	for (var j = 0; j < b.length; j++)
+	{
+		c[Math.round(b[j]*div)] += 1;
+	}
+
+	var d = Array();
+	for (var key in c)
+	{
+		d.push(new Array(Number.parseFloat(key)*100/div, [0, c[key], c[key]]));
+	}
+
+	d.sort(function(a,b){
+  		return a[0]- b[0];
+	});
+
+	new Dygraph(
+          document.getElementById("graphWife"),
+		  d
+			,
+          {
+			labels: [ "distribution", "count"],
+			title: 'percent distribution',
+			color:"#980649",
+			dateWindow:[0,100],
+			 customBars: true,
+          }
+      );
+
 }
 
 function add(a, b) {
