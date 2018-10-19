@@ -1,4 +1,4 @@
-
+ 
 var scoresArray;
 
 var openFile = function(event) {
