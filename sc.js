@@ -273,7 +273,11 @@ var plotDistribution = function()
           {
 			labels: [ "distribution", "count"],
 			title: 'scores distribution',
+<<<<<<< HEAD
 			color:"indigo",
+=======
+			color:"yellow",
+>>>>>>> b2c3d67... Update sc.js
 			 customBars: true,
           }
       );
@@ -340,7 +344,11 @@ var plotDeviation = function()
           {
 			labels: [ "deviation", "count"],
 			title: 'scores deviation',
+<<<<<<< HEAD
 			  color:"purple",
+=======
+			  color:"yellow",
+>>>>>>> b2c3d67... Update sc.js
 			 customBars: true,
           }
       );
